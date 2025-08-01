@@ -12,10 +12,10 @@ router.post('/', (req, res) => {
 
   try {
     // Load the DOCX template
-    const templatePath = path.join(__dirname, '../templates/test_with_tags.docx');
+    const templatePath = path.join(__dirname, '../templates/test1.docx');
     const content = fs.readFileSync(templatePath, 'binary');
     const zip = new PizZip(content);
-
+    //got git
     // Initialize Docxtemplater with the template
     const doc = new Docxtemplater(zip, {
       paragraphLoop: true,
