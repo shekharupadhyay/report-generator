@@ -1,0 +1,21 @@
+/* SurveyForm.css */
+
+/* Lift card on hover—but only on non-touch devices */
+@media (hover: hover) {
+  .survey-card:hover {
+    transform: translateY(-6px);
+    transition: transform 0.2s ease-in-out;
+  }
+}
+
+/* Soft inset shadow on inputs for depth */
+.survey-card .form-control {
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);
+}
+
+/* Highlight form rows when a field is focused */
+.survey-card .form-control:focus {
+  background-color: #eaf6fb;
+  outline: none;
+  box-shadow: 0 0 0 0.2rem rgba(23, 162, 184, 0.25);
+}
