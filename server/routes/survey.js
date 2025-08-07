@@ -12,7 +12,8 @@ router.post('/', (req, res) => {
 
   try {
     // 1) Load .docx template
-    const templatePath = path.join(__dirname, '../templates/report-template.docx');
+    const templatePath = path.resolve(__dirname, '..', 'templates', 'report-template.docx');
+
     const content = fs.readFileSync(templatePath, 'binary');
     const zip = new PizZip(content);
 
