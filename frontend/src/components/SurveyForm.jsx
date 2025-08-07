@@ -23,6 +23,7 @@ const historyFields = [
   { key: 'family_history', label: 'Family History' },
   { key: 'treatment_history', label: 'Treatment History' },
   { key: 'educational_history', label: 'Educational History' }
+
 ];
 
 // Build initial form state

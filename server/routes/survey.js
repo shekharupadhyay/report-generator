@@ -1,3 +1,4 @@
+// routes/survey.js
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
@@ -8,41 +9,38 @@ const router = express.Router();
 
 router.post('/', (req, res) => {
   const data = req.body;
-  console.log('Received data:', data);
 
   try {
-    // Load the DOCX template
-    const templatePath = path.join(__dirname, '../templates/test1.docx');
+    // 1) Load .docx template
+    const templatePath = path.join(__dirname, '../templates/report-template.docx');
     const content = fs.readFileSync(templatePath, 'binary');
     const zip = new PizZip(content);
-    //got git
-    // Initialize Docxtemplater with the template
+
+    // 2) Create Docxtemplater instance
     const doc = new Docxtemplater(zip, {
       paragraphLoop: true,
       linebreaks: true,
       nullGetter: () => ''
     });
 
-    // Render the template with data (internal compile is automatic)
+    // 3) Render with incoming JSON
     doc.render(data);
 
-    // Generate the updated document buffer
+    // 4) Generate a nodebuffer
     const buffer = doc.getZip().generate({ type: 'nodebuffer' });
 
-    // Ensure 'output' directory exists
-    const outputDir = path.join(__dirname, '../output');
-    if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir);
+    // 5) Set response headers so browser downloads it
+    res.set({
+      'Content-Type': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'Content-Disposition': `attachment; filename="report-${Date.now()}.docx"`,
+      'Content-Length': buffer.length
+    });
 
-    // Write the file and send it
-    const filename = `report-${Date.now()}.docx`;
-    const outputPath = path.join(outputDir, filename);
-    fs.writeFileSync(outputPath, buffer);
-
-    // Send file for download
-    res.download(outputPath, filename);
+    // 6) Send the buffer directly
+    return res.send(buffer);
 
   } catch (error) {
-    console.error('Docxtemplater Error:', error);
+    console.error('Docxtemplater error:', error);
     return res.status(500).send('Error generating document');
   }
 });
