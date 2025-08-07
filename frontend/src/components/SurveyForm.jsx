@@ -62,7 +62,7 @@ export default function SurveyForm() {
     e.preventDefault();
     try {
       const res = await axios.post(
-  'http://localhost:5000/api/survey',
+  'https://report-generator-in4c.onrender.com/api/survey',
   form,
   { responseType: 'blob' }
 );
